@@ -1,0 +1,25 @@
+{% extends "media.html" %}
+{% block title %} Feed {% endblock %}
+{% block content %}
+    <h1>Make Post</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith%}
+    <form action="#" method="post">
+        <div class="form-group">
+            <label for="inputEmail">Title: </label>
+            <input type="text" class="form-control" id = "exampleInputEmail" name="title" placeholder="Enter title" value = "{{title if title}}">
+        </div>
+        <div class="form-group">
+            <label for="formControlTextarea1">Description: </label>
+            <textarea name="body" class="form-control" id="formControlTextarea1" rows="7">{{post if post}}</textarea>
+        </div>
+        <input type="submit" class="btn btn-primary" value="submit">
+    </form>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "media.html" %}
+{% block title %}{{ usr.name }}'s Profile{% endblock %}
+{% block content %}
+    <h1>{{ usr.name }}'s Profile</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith%}
+    <img href="{{ usr.avatar() }}">
+    <img href="{{ usr.avatar() }}">
+    <img href="{{ usr.avatar() }}">
+    <img href="{{ usr.avatar() }}">
+    <img href="{{ usr.avatar() }}">
+    <img href="{{ usr.avatar() }}">
+    <form action="#" method="POST">
+        <div class="form-group">
+            <label for="formControlTextarea1">About {{usr.name}}: </label>
+            <textarea class="form-control" id="formControlTextarea1" rows="7" readonly>{{usr.about_me}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">{{usr.name}}'s' Email</label>
+            <input type="email" class="form-control" id = "exampleInputEmail" name="email" placeholder="Enter email" value = "{{usr.email}}" readonly>
+        </div>
+    </form>
+    <h3>POSTS</h3>
+    {% for post in Post.query.filter_by(author=usr)%}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <img href="{{post.author.avatar()}}">
+            <h5 class="card-title">{{post.title}}</h5>
+            <a href="/media/profile/{{post.author.name}}">
+                <h6 class="card-subtitle mb-2 text-muted">@{{post.author.name}}</h6>
+            </a>
+            <p class="card-text">{{post.body}}</p>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

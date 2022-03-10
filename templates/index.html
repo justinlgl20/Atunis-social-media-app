@@ -1,0 +1,14 @@
+{% extends "template.html" %}
+{% block title %} HomePage {% endblock %}
+{% block content %}
+    <h1>HomePage</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith%}
+{% endblock %}

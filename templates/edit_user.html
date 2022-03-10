@@ -1,0 +1,31 @@
+{% extends "template.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    <h1>edit {{session["user"]}}'s profile</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith%}
+    <p> To change your profile picture, setup an account with <a href="https://www.theessentialwebsite.com/how-to-set-up-your-gravatar/">gravatar</a></p>
+    
+    <form action="#" method="POST">
+        <div class="form-group">
+            <label for="formControlTextarea1">About me: </label>
+            <textarea name="about_me" class="form-control" id="formControlTextarea1" rows="7">{{users.query.filter_by(name=session["user"]).first().about_me}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">Email</label>
+            <input type="email" class="form-control" id = "exampleInputEmail" name="email" placeholder="Enter email" value = "{{email if email}}">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</labeL>
+            <input type="password" class="form-control" id="exampleInputPassword" name="psw" value = "{{password if password}}">
+        </div>
+        <input type="submit" class="btn btn-primary" value="submit">
+    </form>
+{% endblock %}
