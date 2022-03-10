@@ -7,10 +7,37 @@
 <ul>
   <li>Followers</li>
   <li>Finding posts the user may like</li>
-  <li>A fast chat app</li>
+  <li>Realtime messaging and sending images</li>
   <li>Streaks and gamification</li>
+  <li>Leaderboards for streaks and avg rating of posts</li>
+  <li>Tracking friends</li>
   <li>Notifications</li>
   <li>Calling and video calls</li>
   <li>Easy blog posts</li>
+  <li>Commenting and liking a post</li>
+  <li>Ability to delete posts</li>
+  <li>Searching for users</li>
+  <li>Adding self-description and customising your profile page</li>
+  <li>Notification feed showing what others think of your posts</li>
+  <li>Neural network rating posts based upon what other users think</li>
+  <li>Swipe to delete notifications</li>
+  <li>Animations (liking image)</li>
+  <li>Saving posts</li>
+  <li>Only new posts appearing in feed</li>
+  <li>Premium access</li>
+  <li>Free premium if post receives a lot of likes</li>
+  <li>Groups of people</li>
+  <li>Filters</li>
+  <li>Adding a biography (story)</li>
+  <li>Suggests more groups you might like</li>
+  <li>Stickers</li>
+  <li>Customise posts with AR or VR</li>
+  <li>Tags for posts</li>
+  <li>Easy authentication</li>
+  <li>Easily open other apps with friends</li>
+  <li>Eye-catching design</li>
+  <li>Native GIF searchs</li>
+  <li>Chatbot based upon profile</li>
+  
   <li>Easy complete customisation over user interface</li>
 </ul>
