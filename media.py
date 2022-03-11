@@ -9,7 +9,7 @@ media = Blueprint(
     "media", __name__, static_folder="static", template_folder="templates"
 )
 
-from code import db, users, Post
+from code import db, users, Post, followers
 
 
 @media.route("/")
@@ -24,16 +24,53 @@ def chat():
 
 @media.route("/feed", methods=["GET", "POST"])
 def feed():
-    return render_template("feed.html", users=users, Post=Post, given_posts=Post.query.all())
+    return render_template(
+        "feed.html",
+        users=users,
+        Post=Post,
+        given_posts=users.query.filter_by(name=session["user"])
+        .first()
+        .followed_posts()
+        .all(),
+    )
 
 
-@media.route("/profile/<usr>")
+@media.route("/profile/<usr>", methods=["GET", "POST"])
 def profile(usr):
-    return render_template("profile.html", usr=users.query.filter_by(name=usr).first(), Post=Post, users=users)
+    if request.method == "POST":
+        if request.form["button"] == "Follow":
+            usr = users.query.filter_by(name=usr).first()
+            us = users.query.filter_by(name=session["user"]).first()
+            us.follow(usr)
+            flash("Followed " + usr.name)
+            db.session.commit()
+            return redirect(url_for("media.profile", usr=usr.name))
+        else:
+            usr = users.query.filter_by(name=usr).first()
+            us = users.query.filter_by(name=session["user"]).first()
+            us.unfollow(usr)
+            flash("Unfollowed " + usr.name)
+            db.session.commit()
+            return redirect(url_for("media.profile", usr=usr.name))
+    else:
+        usr = users.query.filter_by(name=usr).first()
+        followers = usr.followers.all()
+        following = usr.followed.all()
+        return render_template(
+            "profile.html",
+            usr=usr,
+            users=users,
+            given_posts=Post.query.filter_by(author=usr),
+            following=len(following),
+            followers=len(followers),
+            us=users.query.filter_by(name=session["user"]).first(),
+        )
+
 
 @media.route("/users")
-def users():
+def usrs():
     return render_template("media_users.html", users=users)
+
 
 @media.route("/user", methods=["GET", "POST"])
 def mediauser():

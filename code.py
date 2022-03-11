@@ -14,6 +14,12 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+followers = db.Table(
+    "followers",
+    db.Column("follower_id", db.Integer, db.ForeignKey("users.id")),
+    db.Column("followed_id", db.Integer, db.ForeignKey("users.id")),
+)
+
 
 class users(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
@@ -22,6 +28,14 @@ class users(db.Model):
     about_me = db.Column(db.String(400))
     password = db.Column(db.String(100))
     posts = db.relationship("Post", backref="author", lazy="dynamic")
+    followed = db.relationship(
+        "users",
+        secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref("followers", lazy="dynamic"),
+        lazy="dynamic",
+    )
 
     def __init__(self, name, email, about_me, password):
         self.name = name
@@ -35,6 +49,24 @@ class users(db.Model):
             + md5(self.email.encode()).hexdigest()
             + "?d=identicon"
         )
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+
+    def followed_posts(self):
+        followed = Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)
+        ).filter(followers.c.follower_id == self.id)
+        own = Post.query.filter_by(user_id=self.id)
+        return followed.union(own).order_by(Post.date.desc())
 
 
 class Post(db.Model):

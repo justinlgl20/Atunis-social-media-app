@@ -27,8 +27,18 @@
             <input type="email" class="form-control" id = "exampleInputEmail" name="email" placeholder="Enter email" value = "{{usr.email}}" readonly>
         </div>
     </form>
+    <p>Following: {{following}}</p>
+    <p>Followers: {{followers}}</p>
+    <form method="POST">
+    {% if us.is_following(usr) %}
+    <input type="submit" name="button" value="Unfollow">
+    {% endif %}
+    {% if not us.is_following(usr) %}
+    <input type="submit" name="button" value="Follow">
+    {% endif %}
+    </form>
     <h3>POSTS</h3>
-    {% for post in Post.query.filter_by(author=usr)%}
+    {% for post in given_posts%}
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <img href="{{post.author.avatar()}}">
