@@ -53,10 +53,11 @@ def profile(usr):
             db.session.commit()
             return redirect(url_for("media.profile", usr=usr.name))
     else:
-        if len(users.query.filter_by(name=usr)) == 0:
+        try:
+            usr = users.query.filter_by(name=usr).first()
+        except:
             flash("No user found")
             return redirect(url_for("media.home"))
-        usr = users.query.filter_by(name=usr).first()
         followers = usr.followers.all()
         following = usr.followed.all()
         return render_template(
