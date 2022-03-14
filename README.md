@@ -10,6 +10,8 @@
   <li>Realtime messaging and sending images</li>
   <li>Streaks and gamification</li>
   <li>Leaderboards for streaks and avg rating of posts</li>
+  <li>Neural network rating posts</li>
+  <li>Neural networks working to recommend posts</li>
   <li>Tracking friends</li>
   <li>Notifications</li>
   <li>Calling and video calls</li>
