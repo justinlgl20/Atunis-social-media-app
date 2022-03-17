@@ -2,14 +2,12 @@ from flask import Blueprint, render_template, flash, session, request, redirect,
 from datetime import timedelta
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_sqlalchemy import SQLAlchemy
-
 
 media = Blueprint(
     "media", __name__, static_folder="static", template_folder="templates"
 )
 
-from code import db, users, Post, followers, login_manager
+from code import db, users, Post, followers
 
 
 @media.route("/")
