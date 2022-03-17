@@ -9,7 +9,7 @@ media = Blueprint(
     "media", __name__, static_folder="static", template_folder="templates"
 )
 
-from code import db, users, Post, followers
+from code import db, users, Post, followers, login_manager
 
 
 @media.route("/")
