@@ -1,0 +1,26 @@
+{% extends "media.html" %}
+{% block title %} Feed {% endblock %}
+{% block content %}
+    <h1>Feed</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith%}
+    {% for post in given_posts %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <img href="{{post.author.avatar()}}">
+                <h5 class="card-title">{{post.title}}</h5>
+                <a href="/media/profile/{{post.author.name}}">
+                    <h6 class="card-subtitle mb-2 text-muted">@{{post.author.name}}</h6>
+                </a>
+                <p class="card-text">{{post.body}}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
