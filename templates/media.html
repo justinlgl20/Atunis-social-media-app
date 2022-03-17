@@ -17,12 +17,23 @@
                     <a class="nav-link active" aria-current="page" href="/media/feed">Feed</a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link" href="/media/explore">Explore</a>
+                  </li>
+                  <li class="nav-item">
                     <a class="nav-link active" href="/media/chat">Chat</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link active" href="/media/users">Users</a>
                   </li>
                 </ul>
+              </div>
+              <div class="navbar-nav ms-auto">
+                <li class="nav-item">                  
+                  <a href="/media/post">
+                    <button href="/media/post">Make Post</button>
+                  </a>
+                </li>
+                </div>
                 {% if "user" in session %}
                     <div class="dropdown ms-auto" id="navbar-list-4">
                         <li class="nav-item dropdown">

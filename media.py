@@ -33,6 +33,19 @@ def feed():
     )
 
 
+@media.route("/explore", methods=["GET", "POST"])
+def explore():
+    return render_template(
+        "explore.html",
+        users=users,
+        Post=Post,
+        given_posts=users.query.filter_by(name=session["user"])
+        .first()
+        .followed_posts()
+        .all(),
+    )
+
+
 @media.route("/profile/<usr>", methods=["GET", "POST"])
 def profile(usr):
     if request.method == "POST":
