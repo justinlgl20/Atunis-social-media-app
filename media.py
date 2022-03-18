@@ -41,6 +41,7 @@ def feed():
 
 @media.route("/explore", methods=["GET", "POST"])
 def explore():
+    # USE RECOMMENDATION ENGINE TO GENERATE POSTS TO VIEW
     return render_template(
         "explore.html",
         users=users,
@@ -88,9 +89,16 @@ def profile(usr):
         )
 
 
-@media.route("/users")
+@media.route("/users", methods=["POST", "GET"])
 def usrs():
-    return render_template("media_users.html", users=users)
+    if request.method == "POST":
+        search = request.form["search"]
+        usrsi = users.query.filter(users.name.like("%" + search + "%")).limit(50)
+        return render_template("media_users.html", users=users, given_users=usrsi)
+    else:
+        return render_template(
+            "media_users.html", users=users, given_users=users.query.limit(50)
+        )
 
 
 @media.route("/user", methods=["GET", "POST"])

@@ -1,0 +1,36 @@
+{% extends "media.html" %}
+    
+    {% block title %}Search{% endblock %}
+    
+    {% block content %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith%}
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="search">Search</label>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <h1>Search results</h1>
+        {% for usr in given_users %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <img href="{{usr.avatar()}}">
+                    <h5 class="card-title">
+                    <a href="/media/profile/{{usr.name}}">
+                        <h6 class="card-subtitle mb-2 text-muted">@{{usr.name}}</h6>
+                    </a>
+                    </h5>
+                    <p class="card-text">{{usr.about_me}}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endblock %}

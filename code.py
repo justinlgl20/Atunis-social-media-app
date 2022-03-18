@@ -37,12 +37,6 @@ class users(db.Model):
         lazy="dynamic",
     )
 
-    def __init__(self, name, email, about_me, password):
-        self.name = name
-        self.email = email
-        self.about_me = about_me
-        self.password_hash = generate_password_hash(password)
-
     def avatar(self):
         return (
             "https://www.gravatar.com/avatar/"
@@ -190,7 +184,13 @@ def signup():
                 if tc != "on":
                     flash("You must agree to our T&Cs")
                     return redirect(url_for("signup"))
-                usr = users(user, "", "", password)
+                usr = users(
+                    name=user,
+                    email="",
+                    about_me="",
+                    password=generate_password_hash(password),
+                )
+
                 db.session.add(usr)
                 db.session.commit()
                 session["user"] = user
