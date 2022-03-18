@@ -20,6 +20,12 @@ def chat():
     return render_template("chat.html", users=users)
 
 
+@media.route("/posts/<post_id>")
+def view_post(post_id):
+    post = Post.query.get(post_id)
+    return render_template("view_post.html", post=post, users=users)
+
+
 @media.route("/feed", methods=["GET", "POST"])
 def feed():
     return render_template(
