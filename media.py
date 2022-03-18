@@ -12,22 +12,30 @@ from code import db, users, Post, followers
 
 @media.route("/")
 def home():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template("media_index.html", users=users)
 
 
 @media.route("/chat")
 def chat():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template("chat.html", users=users)
 
 
 @media.route("/posts/<post_id>")
 def view_post(post_id):
+    if "user" not in session:
+        return redirect(url_for("login"))
     post = Post.query.get(post_id)
     return render_template("view_post.html", post=post, users=users)
 
 
 @media.route("/feed", methods=["GET", "POST"])
 def feed():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template(
         "feed.html",
         users=users,
@@ -41,6 +49,8 @@ def feed():
 
 @media.route("/explore", methods=["GET", "POST"])
 def explore():
+    if "user" not in session:
+        return redirect(url_for("login"))
     # USE RECOMMENDATION ENGINE TO GENERATE POSTS TO VIEW
     return render_template(
         "explore.html",
@@ -55,6 +65,8 @@ def explore():
 
 @media.route("/profile/<usr>", methods=["GET", "POST"])
 def profile(usr):
+    if "user" not in session:
+        return redirect(url_for("login"))
     if request.method == "POST":
         if request.form["button"] == "Follow":
             usr = users.query.filter_by(name=usr).first()
@@ -91,6 +103,8 @@ def profile(usr):
 
 @media.route("/users", methods=["POST", "GET"])
 def usrs():
+    if "user" not in session:
+        return redirect(url_for("login"))
     if request.method == "POST":
         search = request.form["search"]
         usrsi = users.query.filter(users.name.like("%" + search + "%")).limit(50)
@@ -103,6 +117,8 @@ def usrs():
 
 @media.route("/user", methods=["GET", "POST"])
 def mediauser():
+    if "user" not in session:
+        return redirect(url_for("login"))
     email = None
     if "user" in session:
         usr = users.query.filter_by(name=session["user"]).first()
@@ -120,6 +136,8 @@ def mediauser():
 
 @media.route("/edit_user", methods=["GET", "POST"])
 def mediaedit_user():
+    if "user" not in session:
+        return redirect(url_for("login"))
     email = None
     if "user" in session:
         usr = users.query.filter_by(name=session["user"]).first()
@@ -144,6 +162,8 @@ def mediaedit_user():
 
 @media.route("/post", methods=["GET", "POST"])
 def post():
+    if "user" not in session:
+        return redirect(url_for("login"))
     if request.method == "POST":
         body = request.form["body"]
         title = request.form["title"]
