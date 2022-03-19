@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash
+from flask import Flask, redirect, url_for, render_template, request, session, flash, send_from_directory
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from hashlib import md5
@@ -13,6 +13,16 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 POSTS_PER_PAGE = 20
 db = SQLAlchemy(app)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, "static"),
+        "favicon.ico",
+        mimetype="image/vnd.microsoft.icon",
+    )
+
 
 followers = db.Table(
     "followers",
