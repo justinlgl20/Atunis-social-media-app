@@ -25,4 +25,11 @@
             </div>
         </div>
     {% endfor %}
+    <hr>
+    {% if prev_url %}
+    <a href="{{prev_url}}" class="btn btn-primary">Previous</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{next_url}}" class="btn btn-primary">Next</a>
+    {% endif %}
 {% endblock %}

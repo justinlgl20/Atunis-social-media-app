@@ -11,7 +11,7 @@ app.secret_key = "somethingsohardthatnoonewillguessit,butiknowhwatitisikr,butiti
 app.permanent_session_lifetime = timedelta(minutes=480)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+POSTS_PER_PAGE = 20
 db = SQLAlchemy(app)
 
 followers = db.Table(

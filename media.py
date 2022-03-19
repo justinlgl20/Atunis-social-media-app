@@ -7,7 +7,7 @@ media = Blueprint(
     "media", __name__, static_folder="static", template_folder="templates"
 )
 
-from code import db, users, Post, followers
+from code import db, users, Post, followers, POSTS_PER_PAGE
 
 
 @media.route("/")
@@ -36,14 +36,22 @@ def view_post(post_id):
 def feed():
     if "user" not in session:
         return redirect(url_for("login"))
+    page = request.args.get("page", 1, type=int)
+    posts = (
+        users.query.filter_by(name=session["user"])
+        .first()
+        .followed_posts()
+        .paginate(page, POSTS_PER_PAGE, False)
+    )
+    next_url = url_for("media.feed", page=posts.next_num) if posts.has_next else None
+    prev_url = url_for("media.feed", page=posts.prev_num) if posts.has_prev else None
     return render_template(
         "feed.html",
         users=users,
         Post=Post,
-        given_posts=users.query.filter_by(name=session["user"])
-        .first()
-        .followed_posts()
-        .all(),
+        given_posts=posts.items,
+        next_url=next_url,
+        prev_url=prev_url,
     )
 
 
@@ -52,14 +60,17 @@ def explore():
     if "user" not in session:
         return redirect(url_for("login"))
     # USE RECOMMENDATION ENGINE TO GENERATE POSTS TO VIEW
+    page = request.args.get("page", 1, type=int)
+    posts = Post.query.order_by(Post.date.desc()).paginate(page, POSTS_PER_PAGE, False)
+    next_url = url_for("media.explore", page=posts.next_num) if posts.has_next else None
+    prev_url = url_for("media.explore", page=posts.prev_num) if posts.has_prev else None
     return render_template(
         "explore.html",
         users=users,
         Post=Post,
-        given_posts=users.query.filter_by(name=session["user"])
-        .first()
-        .followed_posts()
-        .all(),
+        given_posts=posts.items,
+        next_url=next_url,
+        prev_url=prev_url,
     )
 
 
@@ -90,14 +101,30 @@ def profile(usr):
             return redirect(url_for("media.home"))
         followers = usr.followers.all()
         following = usr.followed.all()
+        page = request.args.get("page", 1, type=int)
+        posts = usr.posts.order_by(Post.date.desc()).paginate(
+            page, POSTS_PER_PAGE, False
+        )
+        next_url = (
+            url_for("media.profile", usr=usr.name, page=posts.next_num)
+            if posts.has_next
+            else None
+        )
+        prev_url = (
+            url_for("media.profile", usr=usr.name, page=posts.prev_num)
+            if posts.has_prev
+            else None
+        )
         return render_template(
             "profile.html",
             usr=usr,
             users=users,
-            given_posts=Post.query.filter_by(author=usr),
+            given_posts=posts.items,
             following=len(following),
             followers=len(followers),
             us=users.query.filter_by(name=session["user"]).first(),
+            next_url=next_url,
+            prev_url=prev_url,
         )
 
 
@@ -169,7 +196,7 @@ def post():
         title = request.form["title"]
         if title == "" or body == "":
             flash("Fill in all areas")
-            return redirect(url_for("post", title=title, body=body))
+            return redirect(url_for("media.post", title=title, body=body))
         pos = Post(
             title=title,
             body=body,
