@@ -1,4 +1,13 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash, send_from_directory
+from flask import (
+    Flask,
+    redirect,
+    url_for,
+    render_template,
+    request,
+    session,
+    flash,
+    send_from_directory,
+)
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from hashlib import md5
