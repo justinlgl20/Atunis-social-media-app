@@ -8,6 +8,7 @@ from flask import (
     flash,
     send_from_directory,
 )
+import os
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from hashlib import md5
@@ -68,6 +69,9 @@ class users(db.Model):
     )
 
     def avatar(self):
+        # print("https://www.gravatar.com/avatar/"
+        #    + md5(self.email.encode()).hexdigest()
+        #    + "?d=identicon")
         return (
             "https://www.gravatar.com/avatar/"
             + md5(self.email.encode()).hexdigest()
