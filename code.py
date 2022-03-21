@@ -40,6 +40,13 @@ followers = db.Table(
 )
 
 
+class PostLike(db.Model):
+    __table__name = "PostLike"
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+
 class users(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -56,12 +63,28 @@ class users(db.Model):
         lazy="dynamic",
     )
 
+    liked = db.relationship(
+        "PostLike", foreign_keys="PostLike.user_id", backref="user", lazy="dynamic"
+    )
+
     def avatar(self):
         return (
             "https://www.gravatar.com/avatar/"
             + md5(self.email.encode()).hexdigest()
             + "?d=identicon"
         )
+
+    def like_post(self, post):
+        if not self.is_liking(post):
+            like = PostLike(post_id=post.id, user_id=self.id)
+            db.session.add(like)
+
+    def is_liking(self, post):
+        return PostLike.query.filter_by(post_id=post.id, user_id=self.id).count() > 0
+
+    def unlike_post(self, post):
+        if self.is_liking(post):
+            PostLike.query.filter_by(post_id=post.id, user_id=self.id).delete()
 
     def follow(self, user):
         if not self.is_following(user):
@@ -88,6 +111,14 @@ class Post(db.Model):
     body = db.Column(db.String(400))
     date = db.Column(db.String(100), index=True, default=datetime.datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    likes = db.relationship("PostLike", backref="post", lazy="dynamic")
+
+    def get_likers(self):
+        return PostLike.query.filter_by(user_id=users.id, post_id=self.id).all()
+
+    def likers(self):
+        return len(self.get_likers())
 
 
 from media import media

@@ -7,7 +7,7 @@ media = Blueprint(
     "media", __name__, static_folder="static", template_folder="templates"
 )
 
-from code import db, users, Post, followers, POSTS_PER_PAGE
+from code import db, users, Post, followers, POSTS_PER_PAGE, PostLike
 
 
 @media.route("/")
@@ -24,12 +24,22 @@ def chat():
     return render_template("chat.html", users=users)
 
 
-@media.route("/posts/<post_id>")
+@media.route("/posts/<post_id>", methods=["GET", "POST"])
 def view_post(post_id):
     if "user" not in session:
         return redirect(url_for("login"))
     post = Post.query.get(post_id)
-    return render_template("view_post.html", post=post, users=users)
+    usr = users.query.filter_by(name=session["user"]).first()
+    if request.method == "POST":
+        if request.form["like_button"] == "Like":
+            usr.like_post(post)
+            db.session.commit()
+        elif request.form["like_button"] == "Unlike":
+            usr.unlike_post(post)
+            db.session.commit()
+        return redirect(url_for("media.view_post", post_id=post_id))
+
+    return render_template("view_post.html", post=post, users=users, usr=usr)
 
 
 @media.route("/feed", methods=["GET", "POST"])
