@@ -3,9 +3,9 @@
 <p>Atunis is an attempt to create a social media platform using python Flask framework. It uses a login system, and the app itself can be opened from online.
   The app has two major sections, namely feed and chat. In feed page, users can post blogs or pictures with descriptions,
   and in the chat page, they can create group chats with followers/followed or friends.</p>
-<p>Atunis implements some of the following features:</p>
+<h2>Atunis implements some of the following features:</h2>
 <ul>
-  <li>Followers</li>
+  <li>Followers. DONE</li>
   <li>Finding posts the user may like</li>
   <li>Realtime messaging and sending images</li>
   <li>Streaks and gamification</li>
@@ -16,10 +16,10 @@
   <li>Notifications</li>
   <li>Calling and video calls</li>
   <li>Easy blog posts</li>
-  <li>Commenting and liking a post</li>
+  <li>Commenting and liking a post. DONE</li>
   <li>Ability to delete posts</li>
-  <li>Searching for users</li>
-  <li>Adding self-description and customising your profile page</li>
+  <li>Searching for users. DONE</li>
+  <li>Adding self-description and customising your profile page. DONE</li>
   <li>Notification feed showing what others think of your posts</li>
   <li>Neural network rating posts based upon what other users think</li>
   <li>Swipe to delete notifications</li>
